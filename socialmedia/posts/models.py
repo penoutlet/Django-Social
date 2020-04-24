@@ -11,11 +11,11 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Post(models.Model):
-    user = models.ForeignKey(User, related_name='posts')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     created_at = models.DateTimeField(auto_now=True) #sets the time to now.
     message = models.TextField()
-    message_html = models.TextField(editable=false)
-    group = models.ForeignKey(Group, related_name='posts',null=True,blank=True) #fk can be blank or null
+    message_html = models.TextField(editable=False)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='posts',null=True,blank=True) #fk can be blank or null
 
     def __str__(self):
         return self.message
@@ -28,4 +28,4 @@ class Post(models.Model):
         'pk':self.pk})
     class Meta:
         ordering = ['-created_at'] #puts most recent posts in descending order
-        unique_together = ['user','messge']
+        unique_together = ['user','message']
